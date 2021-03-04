@@ -39,6 +39,7 @@ public class LocationStats {
     public void setDiffFromPrevDay(int diffFromPrevDay) {
         this.diffFromPrevDay = diffFromPrevDay;
     }
+
     @Override
     public String toString() {
         return "LocationStats{" +

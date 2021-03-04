@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -40,6 +39,11 @@ public class CoronaVirusDataService {
         StringReader csvBodyReader = new StringReader(httpResponse.body());
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(csvBodyReader);
 
+        extracted(newStats, records);
+        this.allstats = newStats;
+    }
+
+    private void extracted(List<LocationStats> newStats, Iterable<CSVRecord> records) {
         for (CSVRecord record : records) {
             LocationStats locationStat = new LocationStats();
             locationStat.setState(record.get("Province/State"));
@@ -51,6 +55,5 @@ public class CoronaVirusDataService {
             locationStat.setDiffFromPrevDay(latestCases - prevDayCases);
             newStats.add(locationStat);
         }
-        this.allstats = newStats;
     }
 }
